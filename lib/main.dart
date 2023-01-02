@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:math';
-
-import 'question.dart';
+import 'package:exam_app/app_brain.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,6 +8,7 @@ void main() {
 }
 
 int questionNumber = 0;
+AppBrain appBrain = AppBrain();
 
 class ExamApp extends StatelessWidget {
   const ExamApp({super.key});
@@ -38,24 +37,16 @@ class _ExamPageState extends State<ExamPage> {
   List<Icon> answerResult = [];
 
   void checkAnswer(bool a) {
-    if (question[questionNumber].answer == a) {
-      answerResult.add(Icon(Icons.thumb_up_alt, color: Colors.green));
-    } else {
-      answerResult.add(Icon(Icons.thumb_down_alt, color: Colors.red));
-    }
+    setState(() {
+      if (appBrain.getAnswer() == a) {
+        answerResult.add(Icon(Icons.thumb_up_alt, color: Colors.green));
+      } else {
+        answerResult.add(Icon(Icons.thumb_down_alt, color: Colors.red));
+      }
+      appBrain.nextNumber();
+    });
   }
 
-  List<Question> question = [
-    Question(
-        "فصل الصيف ياتي بعد فصل الشتاء مباشرة", "images/image-01.jpg", false),
-    Question(" الحمامة ليست من الطيور", "images/image-02.jpg", false),
-    Question("الاسد من الحيوانات المفترسة", "images/image-03.jpg", true),
-    Question("القاهرة هي عاصمة الجزائر", "images/image-04.jpg", false),
-    Question("سامسونج هي شركة لصناعة الهواتف", "images/image-05.jpg", true),
-    Question("جوجل تمتلك شركة يوتيوب", "images/image-06.jpg", true),
-    Question(
-        "اول من سافر الي القمر هو توماس اديسون", "images/image-07.jpg", false),
-  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -68,10 +59,10 @@ class _ExamPageState extends State<ExamPage> {
             flex: 7,
             child: Column(
               children: [
-                Image.asset(question[questionNumber].image),
+                Image.asset(appBrain.getImage()),
                 SizedBox(height: 20),
                 Text(
-                  question[questionNumber].text,
+                  appBrain.getText(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 )
@@ -81,10 +72,7 @@ class _ExamPageState extends State<ExamPage> {
           Expanded(
             child: TextButton(
               onPressed: () {
-                setState(() {
-                  checkAnswer(true);
-                  questionNumber++;
-                });
+                checkAnswer(true);
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.green),
@@ -105,10 +93,7 @@ class _ExamPageState extends State<ExamPage> {
             flex: 1,
             child: TextButton(
               onPressed: () {
-                setState(() {
-                  checkAnswer(false);
-                  questionNumber++;
-                });
+                checkAnswer(false);
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red[400])),
