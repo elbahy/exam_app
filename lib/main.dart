@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'question.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,16 +10,6 @@ void main() {
 }
 
 int questionNumber = 0;
-List<String> question = [
-  "فصل الصيف ياتي بعد فصل الشتاء مباشرة",
-  " الحمامة ليست من الطيور",
-  "الاسد من الحيوانات المفترسة",
-  "القاهرة هي عاصمة الجزائر",
-  "سامسونج هي شركة لصناعة الهواتف",
-  "جوجل تمتلك شركة يوتيوب",
-  "اول من سافر الي القمر هو توماس اديسون",
-];
-List<bool> answer = [false, false, true, false, true, true, false];
 
 class ExamApp extends StatelessWidget {
   const ExamApp({super.key});
@@ -46,6 +37,25 @@ class ExamPage extends StatefulWidget {
 class _ExamPageState extends State<ExamPage> {
   List<Icon> answerResult = [];
 
+  void checkAnswer(bool a) {
+    if (question[questionNumber].answer == a) {
+      answerResult.add(Icon(Icons.thumb_up_alt, color: Colors.green));
+    } else {
+      answerResult.add(Icon(Icons.thumb_down_alt, color: Colors.red));
+    }
+  }
+
+  List<Question> question = [
+    Question(
+        "فصل الصيف ياتي بعد فصل الشتاء مباشرة", "images/image-01.jpg", false),
+    Question(" الحمامة ليست من الطيور", "images/image-02.jpg", false),
+    Question("الاسد من الحيوانات المفترسة", "images/image-03.jpg", true),
+    Question("القاهرة هي عاصمة الجزائر", "images/image-04.jpg", false),
+    Question("سامسونج هي شركة لصناعة الهواتف", "images/image-05.jpg", true),
+    Question("جوجل تمتلك شركة يوتيوب", "images/image-06.jpg", true),
+    Question(
+        "اول من سافر الي القمر هو توماس اديسون", "images/image-07.jpg", false),
+  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,10 +68,10 @@ class _ExamPageState extends State<ExamPage> {
             flex: 7,
             child: Column(
               children: [
-                Image.asset("images/image-0${questionNumber + 1}.jpg"),
+                Image.asset(question[questionNumber].image),
                 SizedBox(height: 20),
                 Text(
-                  question[questionNumber],
+                  question[questionNumber].text,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 )
@@ -72,13 +82,7 @@ class _ExamPageState extends State<ExamPage> {
             child: TextButton(
               onPressed: () {
                 setState(() {
-                  if (answer[questionNumber] == true) {
-                    answerResult
-                        .add(Icon(Icons.thumb_up_alt, color: Colors.green));
-                  } else {
-                    answerResult
-                        .add(Icon(Icons.thumb_down_alt, color: Colors.red));
-                  }
+                  checkAnswer(true);
                   questionNumber++;
                 });
               },
@@ -102,13 +106,7 @@ class _ExamPageState extends State<ExamPage> {
             child: TextButton(
               onPressed: () {
                 setState(() {
-                  if (answer[questionNumber] == false) {
-                    answerResult
-                        .add(Icon(Icons.thumb_up_alt, color: Colors.green));
-                  } else {
-                    answerResult
-                        .add(Icon(Icons.thumb_down_alt, color: Colors.red));
-                  }
+                  checkAnswer(false);
                   questionNumber++;
                 });
               },
