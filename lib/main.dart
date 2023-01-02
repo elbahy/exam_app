@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,8 +12,13 @@ int questionNumber = 0;
 List<String> question = [
   "فصل الصيف ياتي بعد فصل الشتاء مباشرة",
   " الحمامة ليست من الطيور",
-  "الاسد من الحيوانات المفترسة"
+  "الاسد من الحيوانات المفترسة",
+  "القاهرة هي عاصمة الجزائر",
+  "سامسونج هي شركة لصناعة الهواتف",
+  "جوجل تمتلك شركة يوتيوب",
+  "اول من سافر الي القمر هو توماس اديسون",
 ];
+List<bool> answer = [false, false, true, false, true, true, false];
 
 class ExamApp extends StatelessWidget {
   const ExamApp({super.key});
@@ -37,6 +44,8 @@ class ExamPage extends StatefulWidget {
 }
 
 class _ExamPageState extends State<ExamPage> {
+  List<Icon> answerResult = [];
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -44,21 +53,12 @@ class _ExamPageState extends State<ExamPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(children: [
-            Icon(
-              Icons.thumb_up_alt,
-              color: Colors.green,
-            ),
-            Icon(
-              Icons.thumb_down_alt,
-              color: Colors.red,
-            )
-          ]),
+          Row(children: answerResult),
           Expanded(
             flex: 7,
             child: Column(
               children: [
-                Image.asset("images/image-04.jpg"),
+                Image.asset("images/image-0${questionNumber + 1}.jpg"),
                 SizedBox(height: 20),
                 Text(
                   question[questionNumber],
@@ -72,6 +72,13 @@ class _ExamPageState extends State<ExamPage> {
             child: TextButton(
               onPressed: () {
                 setState(() {
+                  if (answer[questionNumber] == true) {
+                    answerResult
+                        .add(Icon(Icons.thumb_up_alt, color: Colors.green));
+                  } else {
+                    answerResult
+                        .add(Icon(Icons.thumb_down_alt, color: Colors.red));
+                  }
                   questionNumber++;
                 });
               },
@@ -93,7 +100,18 @@ class _ExamPageState extends State<ExamPage> {
           Expanded(
             flex: 1,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  if (answer[questionNumber] == false) {
+                    answerResult
+                        .add(Icon(Icons.thumb_up_alt, color: Colors.green));
+                  } else {
+                    answerResult
+                        .add(Icon(Icons.thumb_down_alt, color: Colors.red));
+                  }
+                  questionNumber++;
+                });
+              },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red[400])),
               child: Text(
