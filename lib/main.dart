@@ -36,11 +36,13 @@ class ExamPage extends StatefulWidget {
 
 class _ExamPageState extends State<ExamPage> {
   List<Icon> answerResult = [];
+  int rightAnswers = 0;
 
   void checkAnswer(bool a) {
     setState(() {
       if (appBrain.getAnswer() == a) {
         answerResult.add(Icon(Icons.thumb_up_alt, color: Colors.green));
+        rightAnswers++;
       } else {
         answerResult.add(Icon(Icons.thumb_down_alt, color: Colors.red));
       }
@@ -50,7 +52,7 @@ class _ExamPageState extends State<ExamPage> {
         Alert(
             context: context,
             title: "لقد انهيت",
-            desc: "لقد قمت بالإجابة على كل الاسئلة",
+            desc: "لقد قمت بالإجابة على$rightAnswers صحيحية من اصل 7",
             buttons: [
               DialogButton(
                   child: Text(
@@ -60,6 +62,7 @@ class _ExamPageState extends State<ExamPage> {
                   onPressed: () => Navigator.pop(context))
             ]).show();
         appBrain.reset();
+        rightAnswers = 0;
       } else {
         appBrain.nextNumber();
       }
