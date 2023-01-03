@@ -2,6 +2,7 @@
 
 import 'package:exam_app/app_brain.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() {
   runApp(ExamApp());
@@ -43,7 +44,25 @@ class _ExamPageState extends State<ExamPage> {
       } else {
         answerResult.add(Icon(Icons.thumb_down_alt, color: Colors.red));
       }
-      appBrain.nextNumber();
+      if (appBrain.isFinished()) {
+        answerResult = [];
+
+        Alert(
+            context: context,
+            title: "لقد انهيت",
+            desc: "لقد قمت بالإجابة على كل الاسئلة",
+            buttons: [
+              DialogButton(
+                  child: Text(
+                    "ابدا من جديد",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  onPressed: () => Navigator.pop(context))
+            ]).show();
+        appBrain.reset();
+      } else {
+        appBrain.nextNumber();
+      }
     });
   }
 

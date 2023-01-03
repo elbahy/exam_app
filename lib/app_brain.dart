@@ -32,4 +32,10 @@ class AppBrain {
   bool getAnswer() {
     return _question[_questionNumber].answer;
   }
+
+  bool isFinished() => _questionNumber >= _question.length - 1;
+
+  void reset() {
+    _questionNumber = 0;
+  }
 }
