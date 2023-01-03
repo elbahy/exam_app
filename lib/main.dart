@@ -52,7 +52,7 @@ class _ExamPageState extends State<ExamPage> {
         Alert(
             context: context,
             title: "لقد انهيت",
-            desc: "لقد قمت بالإجابة على$rightAnswers صحيحية من اصل 7",
+            desc: "لقد قمت بالإجابة على$rightAnswers صحيحة من اصل 7",
             buttons: [
               DialogButton(
                   child: Text(
